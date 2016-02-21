@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            #map {
+                height: 100%;
+            }
+        </style>
+        <title>map post</title>
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    </head>
+<body>
+
+    <h2>save coordinates to server</h2>
+
+    <form action="/api/comments" id="saveLocation">
+    <input
+              type="text"
+              id="locName"
+              placeholder="location name"
+            />
+      <input type="submit" value="Search">
+    </form>
+
+    <div id="result"></div>
+
+  <!--   <button onclick="saveLocation();">save</button>
+
+ -->
+    <p id="demo"></p>
+    
+    <script>
+
+        //AA is kinda around: 43.4689032, -79.7007301
+        var fenceX = 43.470151;
+        var fenceY = -79.701940;
+
+        $( document ).ready(function() {
+            loadDataFromServer();
+
+        });
+
+        function loadDataFromServer() {
+            $.ajax({
+              url: "/api/comments",
+              dataType: 'json',
+              cache:false,
+              success: function(data) {
+                console.log(data);
+                // push data to front-end
+              }.bind(this),
+              error: function(xhr, status, err) {
+                console.error("/api/comments", status, err.toString());
+              }.bind(this)
+              });
+          }
+
+        $("#saveLocation").submit(function(e) {
+
+            var locName = $("input").val();
+            
+            $.ajax({
+                  method: "POST",
+                  url: "/api/comments",
+                  dataType: 'json',
+                  data: { locName: locName, lat: fenceX, long: fenceY}
+                })
+                  .done(function( msg ) {
+                    console.log( "Data Saved: " + msg );
+                  });
+
+            e.preventDefault(); 
+        });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>React Tutorial</title>
+    <!-- Not present in the tutorial. Just for basic styling. -->
+    <link rel="stylesheet" href="css/base.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+  </head>
+  <body>
+    <div id="content"></div>
+
+    <script type="text/babel">
+
+    var data = [
+      {id: 1, author: "Pete Hunt", text: "This is one comment"},
+      {id: 2, author: "Jordan Walke", text: "This is *another* comment"}
+    ];
+
+    // child of commentlist
+    var Comment = React.createClass({
+      rawMarkup: function() {
+        var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+        return { __html: rawMarkup };
+      },
+
+      render: function() {
+        return (
+          <div className="comment">
+            <h2 className="commentAuthor">
+              // props = properties. passed down from parent
+              {this.props.author}
+            </h2>
+            // message from comment. nested elements of child: comment
+            // {this.props.children}
+
+            <span dangerouslySetInnerHTML={this.rawMarkup()} />
+          </div>
+        );
+      }
+    });
+
+    // props.author and props.children passed from commentlist to comment
+    var CommentList = React.createClass({
+      render: function() {
+        // return (
+        //   <div className="commentList">
+        //     <Comment author="Pete Hunt">This is one comment</Comment>
+        //     <Comment author="Jordan Walke">This is *another* comment</Comment>
+        //   </div>
+        // );
+
+        // whatever data is given, map each to following return
+        var commentNodes = this.props.data.map(function(comment) {
+        return (
+            <Comment author={comment.author} key={comment.id}>
+              {comment.text}
+            </Comment>
+          );
+        });
+
+        return (
+          <div className="commentList">
+            {commentNodes}
+          </div>
+        );
+
+      }
+    });
+
+    var CommentForm = React.createClass({
+      getInitialState: function() {
+        return {author: '', text: ''};
+      },
+      handleAuthorChange: function(e) {
+        this.setState({author: e.target.value});
+      },
+      handleTextChange: function(e) {
+        this.setState({text: e.target.value});
+      },
+      handleSubmit: function(e) {
+        e.preventDefault();
+        var author = this.state.author.trim();
+        var text = this.state.text.trim();
+        if (!text || !author) {
+          return;
+        }
+        // event binding onto parent
+        // pass data variables as object to parent function 'comment'
+        this.props.onCommentSubmit({author: author, text: text});
+        this.setState({author: '', text: ''});
+      },
+      render: function() {
+        return (
+          <form className="commentForm" onSubmit={this.handleSubmit}>
+            <input
+              type="text"
+              placeholder="Your name"
+              value={this.state.author}
+              onChange={this.handleAuthorChange}
+            />
+            <input
+              type="text"
+              placeholder="Say something..."
+              value={this.state.text}
+              onChange={this.handleTextChange}
+            />
+            <input type="submit" value="Post" />
+          </form>
+        );
+      }
+    });
+
+    var CommentBox = React.createClass({
+      loadCommentsFromServer: function() {
+        $.ajax({
+          // url from parent
+          url: this.props.url,
+          dataType: 'json',
+          cache: false,
+          success: function(data) {
+            //update parent+child components
+            this.setState({data: data});
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error(this.props.url, status, err.toString());
+          }.bind(this)
+        });
+      },
+      getInitialState: function() {
+        return {data: []};
+      },
+      // after component is rendered
+      componentDidMount: function() {
+        this.loadCommentsFromServer();
+        setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+      },
+      render: function() {
+
+        //state is mutable and owned by component
+        return (
+          <div className="commentBox">
+               <h1>Comments</h1>
+
+              // passed down from parent
+              // fetch data from data variable above
+              // <CommentList data={this.props.data} />
+
+               <CommentList data={this.state.data} />
+               //event binded from child. passing a callback function to child
+              <CommentForm onCommentSubmit={this.handleCommentSubmit} />
+          </div>
+        );
+      }
+    });
+
+    ReactDOM.render(
+       // <CommentBox data={data} />,
+       // <CommentBox url="/api/comments" />,
+       <CommentBox url="/api/comments" pollInterval={2000} />,
+      document.getElementById('content')
+    );
+
+
+    </script>
+  </body>
+</html>
