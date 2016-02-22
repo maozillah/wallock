@@ -16,7 +16,9 @@
     </head>
 <body>
 
-    <button onclick="sendCurrentLoc();">send current location</button>
+    <form action="/api/checkLocation" id="checkLocation">
+      <input type="submit" value="check location">
+    </form>
 
     <h2>save coordinates to server</h2>
 
@@ -74,19 +76,19 @@
             e.preventDefault(); 
         });
 
-        function sendCurrentLoc() {
-             $.ajax({
+           $("#checkLocation").submit(function(e) {           
+            $.ajax({
                   method: "POST",
                   url: "/api/checkLocation",
                   dataType: 'json',
                   data: { currentLat: currentLat, currentLong: currentLong}
                 })
                   .done(function( msg ) {
-                    console.log( "Data Saved: " + msg );
+                    console.log( "response: " + msg );
                   });
 
-            // e.preventDefault();
-          }
+            e.preventDefault(); 
+        });
     
 
     </script>

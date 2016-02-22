@@ -51,7 +51,7 @@ app.post('/api/comments', function(req, res) {
         console.error(err);
         process.exit(1);
       }
-      res.json(comments);
+      res.json("location saved!");
     });
   });
 });
@@ -59,6 +59,7 @@ app.post('/api/comments', function(req, res) {
 app.post('/api/checkLocation', function(req, res) {
   var currentLat = req.body.currentLat;
   var currentLong = req.body.currentLong;
+  var result = " ";
 
   fs.readFile(COMMENTS_FILE, function(err, data) {
     if (err) {
@@ -70,13 +71,13 @@ app.post('/api/checkLocation', function(req, res) {
     for (i=0; i<locations.length; i++) {
 
       if( Math.sqrt( Math.pow(locations[i].lat - currentLat, 2) + Math.pow(locations[i].long - currentLong, 2) ) <= 0.002){
-            console.log("true");
-            res.json("true");
+            result = "true";
         } else {
-            console.log("false");
-            res.json("false");
+            result = "false";
         }
     }
+
+    res.json(result);
   });
 
 });
