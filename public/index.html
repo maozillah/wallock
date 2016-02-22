@@ -12,8 +12,11 @@
         </style>
         <title>map post</title>
         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
     </head>
 <body>
+
+    <button onclick="sendCurrentLoc();">send current location</button>
 
     <h2>save coordinates to server</h2>
 
@@ -23,15 +26,8 @@
               id="locName"
               placeholder="location name"
             />
-      <input type="submit" value="Search">
+      <input type="submit" value="save location">
     </form>
-
-    <div id="result"></div>
-
-  <!--   <button onclick="saveLocation();">save</button>
-
- -->
-    <p id="demo"></p>
     
     <script>
 
@@ -39,9 +35,11 @@
         var fenceX = 43.470151;
         var fenceY = -79.701940;
 
+        var currentLat = 43.470151;
+        var currentLong = -79.701940;
+
         $( document ).ready(function() {
             loadDataFromServer();
-
         });
 
         function loadDataFromServer() {
@@ -75,6 +73,21 @@
 
             e.preventDefault(); 
         });
+
+        function sendCurrentLoc() {
+             $.ajax({
+                  method: "POST",
+                  url: "/api/checkLocation",
+                  dataType: 'json',
+                  data: { currentLat: currentLat, currentLong: currentLong}
+                })
+                  .done(function( msg ) {
+                    console.log( "Data Saved: " + msg );
+                  });
+
+            // e.preventDefault();
+          }
+    
 
     </script>
 

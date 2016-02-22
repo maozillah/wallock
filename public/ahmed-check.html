@@ -1,0 +1,84 @@
+<html>
+    <head>
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            #map {
+                height: 100%;
+            }
+        </style>
+    </head>
+<body>
+
+    <p>Click the button to get your coordinates.</p>
+
+    <button onclick="getLocation();">Try It</button>
+
+    <p id="demo"></p>
+    
+    <div id="map"></div>
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsbDZ3lAcNuR5wKp3xSaDa_UIbvyqdyKo&signed_in=true&callback=initMap" async defer></script>
+    
+    <script>
+        var x = document.getElementById("demo");
+        var counter = 0;
+        var trigger = false;
+
+        //AA is kinda around: 43.4689032, -79.7007301
+        var fenceX = 43.470151;
+        var fenceY = -79.701940;
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else { 
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        
+        function showPosition(position) {
+            counter++;
+            if( Math.sqrt( Math.pow(fenceX - position.coords.latitude, 2) + Math.pow(fenceY - position.coords.longitude, 2) ) <= 0.002){
+                trigger = true;
+            } else {
+                trigger = false;
+            }
+            
+            x.innerHTML = "Latitude: " + position.coords.latitude + 
+            "<br>Longitude: " + position.coords.longitude +
+            "<br>Count: " + counter +
+            "<br><br>Distance " + Math.sqrt( Math.pow(fenceX - position.coords.latitude, 2) + Math.pow(fenceY - position.coords.longitude, 2) ) +
+            "<br>Proximity? " + trigger;
+            setTimeout(function(){ getLocation(); }, 3000);
+        }
+        
+        function initMap() {
+          var myLatlng = {lat: 43.470151, lng: -79.701940};
+
+          var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 13,
+            center: myLatlng
+          });
+
+//          var marker = new google.maps.Marker({
+//            position: myLatlng,
+//            map: map
+//          });
+            
+            map.addListener('click', function(event) {
+                var latitude = event.latLng.lat();
+                var longitude = event.latLng.lng();
+                console.log("Latitude = " + latitude + ", and longitude = " + longitude);
+            });
+        }
+        
+        
+
+    </script>
+
+</body>
+</html>

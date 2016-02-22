@@ -56,6 +56,30 @@ app.post('/api/comments', function(req, res) {
   });
 });
 
+app.post('/api/checkLocation', function(req, res) {
+  var currentLat = req.body.currentLat;
+  var currentLong = req.body.currentLong;
+
+  fs.readFile(COMMENTS_FILE, function(err, data) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    var locations = JSON.parse(data);
+
+    for (i=0; i<locations.length; i++) {
+
+      if( Math.sqrt( Math.pow(locations[i].lat - currentLat, 2) + Math.pow(locations[i].long - currentLong, 2) ) <= 0.002){
+            console.log("true");
+            res.json("true");
+        } else {
+            console.log("false");
+            res.json("false");
+        }
+    }
+  });
+
+});
 
 app.listen(app.get('port'), function() {
   console.log('Server started: http://localhost:' + app.get('port') + '/');
