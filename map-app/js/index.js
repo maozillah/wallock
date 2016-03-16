@@ -12,6 +12,7 @@ var pos = {
 };
 var clickPos, savedLocations, marker;
 var serverURL = "https://0c7415d8.ngrok.io/";
+var unlocked = true;
 
 /***************************************************
 
@@ -39,16 +40,12 @@ function loadDataFromServer() {
             console.error("/api/comments", status, err.toString());
         }.bind(this)
     });
+
+    // unlock initially
+    bluetoothSerial.write("b");
 }
 
 function showPosition(position) {
-    // if (Math.sqrt(Math.pow(fenceX - position.coords.latitude, 2) + Math.pow(fenceY - position.coords.longitude, 2)) <= 0.001) {
-    //     prox = true;
-    //     // bluetoothSerial.write("a");
-    // } else {
-    //     prox = false;
-    //     // bluetoothSerial.write("b");
-    // }
 
     // bluetoothSerial.write("a");
     // bluetoothSerial.write("b");
@@ -58,8 +55,11 @@ function showPosition(position) {
 
     pos = {
        
-        lat: 43.470151,
-        lng: -79.70194
+       //  lat: position.coords.latitude,
+       // lng: position.coords.longitude
+
+       lat: 43.4675599,
+       lng: -79.6919376
     };
 
     $.ajax({
@@ -72,7 +72,13 @@ function showPosition(position) {
         }
     })
     .done(function(msg) {
-        console.log("response: " + msg);
+        console.log (msg);
+
+        if (msg && unlocked) {
+            bluetoothSerial.write("a");
+        } else {
+            bluetoothSerial.write("b")
+        };
     });
 
     console.log(pos.lat + " " + pos.lng);

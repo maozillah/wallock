@@ -61,10 +61,7 @@ app.post('/api/comments', function(req, res) {
 app.post('/api/checkLocation', function(req, res) {
     var currentLat = req.body.currentLat;
     var currentLong = req.body.currentLong;
-    var result = "";
-
-    var fenceX = 43.470151;
-    var fenceY = -79.70194;
+    var result = "false";
 
     fs.readFile(COMMENTS_FILE, function(err, data) {
         if (err) {
@@ -75,13 +72,9 @@ app.post('/api/checkLocation', function(req, res) {
 
         for (i = 0; i < locations.length; i++) {
 
-            if (Math.sqrt(Math.pow(fenceX - currentLat, 2) + Math.pow(fenceY - currentLat, 2)) <= 0.001) {
-
-            // if (Math.sqrt(Math.pow(locations[i].lat - currentLat, 2) + Math.pow(locations[i].long - currentLong, 2)) <= 0.001) {
-                result = " true" + "fenceX" + fenceX + " currentx" + currentLat + " fenceY" + fenceY + " currentlong" +currentLong;
-            } else {
-                  result = " false" + "fenceX" + fenceX + " currentx" + currentLat + " fenceY" + fenceY + " currentlong" +currentLong;
-            }
+            if( Math.sqrt( Math.pow(locations[i].lat - currentLat, 2) + Math.pow(locations[i].long - currentLong, 2) ) <= 0.001){
+                result= "true";
+            } 
         }
 
         res.json(result);
