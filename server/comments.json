@@ -10,5 +10,11 @@
         "locName": "school",
         "lat": "43.470151",
         "long": "-79.70194"
+    },
+    {
+        "id": 1458099738803,
+        "locName": "check location",
+        "lat": "43.470151",
+        "long": "-79.70194"
     }
 ]
