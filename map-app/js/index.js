@@ -10,7 +10,7 @@ var pos = {
     lat: 0,
     lng: 0
 };
-var clickPos;
+var clickPos, savedLocations, marker;
 var serverURL = "https://0c7415d8.ngrok.io/";
 
 /***************************************************
@@ -21,17 +21,19 @@ Gotta load up saved locations from server beforehand
 // $( "#saveLocation" ).hide();
 
 if (navigator.geolocation) {
-    navigator.geolocation.watchPosition(showPosition); //position changes
+    navigator.geolocation.watchPosition(showPosition); //check if user has moved on position change
 }
 
 function loadDataFromServer() {
     $.ajax({
-        url: serverURL+"api/comments",
+        url: serverURL + "api/comments",
         dataType: 'json',
         cache: false,
         success: function(data) {
-            console.log(data[0].locName);
-            // push data to front-end
+            savedLocations = data;
+
+            // initiate map once locations have been retrieved
+            app.loadMap();
         }.bind(this),
         error: function(xhr, status, err) {
             console.error("/api/comments", status, err.toString());
@@ -40,26 +42,46 @@ function loadDataFromServer() {
 }
 
 function showPosition(position) {
-    if (Math.sqrt(Math.pow(fenceX - position.coords.latitude, 2) + Math.pow(fenceY - position.coords.longitude, 2)) <= 0.001) {
-        prox = true;
-        // bluetoothSerial.write("a");
-    } else {
-        prox = false;
-        // bluetoothSerial.write("b");
-    }
+    // if (Math.sqrt(Math.pow(fenceX - position.coords.latitude, 2) + Math.pow(fenceY - position.coords.longitude, 2)) <= 0.001) {
+    //     prox = true;
+    //     // bluetoothSerial.write("a");
+    // } else {
+    //     prox = false;
+    //     // bluetoothSerial.write("b");
+    // }
+
+    // bluetoothSerial.write("a");
+    // bluetoothSerial.write("b");
+
+     // lat: position.coords.latitude,
+        // lng: position.coords.longitude
 
     pos = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
+       
+        lat: 43.470151,
+        lng: -79.70194
     };
-    //current location
 
-    //    if(stop == false){
-    //        initMap(position.coords.latitude, position.coords.longitude);
-    //    }
+    $.ajax({
+        method: "POST",
+        url: serverURL+"api/checkLocation",
+        dataType: 'json',
+        data: {
+            currentLat: pos.lat,
+            currentLong: pos.lng
+        }
+    })
+    .done(function(msg) {
+        console.log("response: " + msg);
+    });
+
+    console.log(pos.lat + " " + pos.lng);
 }
 
 function initMap(latitude, longitude) {
+
+    var bounds = new google.maps.LatLngBounds();
+
     var myLatlng = {
         lat: latitude,
         lng: longitude
@@ -69,6 +91,33 @@ function initMap(latitude, longitude) {
         zoom: 13,
         center: myLatlng,
         disableDefaultUI: true
+    });
+
+    var infoWindow = new google.maps.InfoWindow(),
+        marker, i;
+
+
+    // add saved location markers to map
+    $.each(savedLocations, function(i, value) {
+
+        var position = new google.maps.LatLng(value.lat, value.long);
+        bounds.extend(position);
+
+        marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: value.locName
+        });
+
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+                infoWindow.setContent(value.locName);
+                infoWindow.open(map, marker);
+            }
+        })(marker, i));
+
+        // Automatically center the map fitting all markers on the screen
+        map.fitBounds(bounds);
     });
 
     map.addListener('click', function(event) {
@@ -111,10 +160,10 @@ var app = {
     deviceready: function() {
         deviceList.ontouchstart = app.connect;
         refreshButton.ontouchstart = app.list;
-        disconnectButton.ontouchstart = app.disconnect;
+        // disconnectButton.ontouchstart = app.disconnect;
 
-        var throttledOnColorChange = _.throttle(app.onColorChange, 200);
-        $('input').on('change', throttledOnColorChange);
+        // var throttledOnColorChange = _.throttle(app.onColorChange, 200);
+        // $('input').on('change', throttledOnColorChange);
 
         app.list();
     },
@@ -143,19 +192,27 @@ var app = {
         colorScreen.hidden = false;
         app.setStatus("Connected.");
 
-        function loadMap() {
-            if (!(pos.lat == 0 && pos.lng == 0)) {
-                initMap(pos.lat, pos.lng);
-            } else {
-                setTimeout(function() {
-                    loadMap();
-                }, 1000);
-            }
-        }
+        // function loadMap() {
+        //     if (!(pos.lat == 0 && pos.lng == 0)) {
+        //         initMap(pos.lat, pos.lng);
+        //     } else {
+        //         setTimeout(function() {
+        //             loadMap();
+        //         }, 1000);
+        //     }
+        // }
         loadDataFromServer();
-        loadMap();
 
-        LocNameForm.hidden= true;
+        LocNameForm.hidden = true;
+    },
+    loadMap: function() {
+        if (!(pos.lat == 0 && pos.lng == 0)) {
+            initMap(pos.lat, pos.lng);
+        } else {
+            setTimeout(function() {
+                app.loadMap();
+            }, 1000);
+        }
     },
     ondisconnect: function() {
         connectionScreen.hidden = false;
@@ -167,26 +224,30 @@ var app = {
             event.preventDefault();
         }
 
-        LocNameForm.hidden= false;
+        LocNameForm.hidden = false;
     },
     saveLocation: function() {
         var locName = $('#locName').val();
 
         $.ajax({
-              method: "POST",
-              url: serverURL+"api/comments",
-              dataType: 'json',
-              data: { locName: locName, lat: clickPos.lat, long: clickPos.lng}
-            })
-        .done(function( msg ) {
-            console.log( "Data Saved: " + msg );
-            alert("Location Saved!");
+            method: "POST",
+            url: serverURL + "api/comments",
+            dataType: 'json',
+            data: {
+                locName: locName,
+                lat: clickPos.lat,
+                long: clickPos.lng
+            }
         })
-        .fail(function() {
-            console.log( "error" );
-        });
+            .done(function(msg) {
+                console.log("Data Saved: " + msg);
+                alert("Location Saved!");
+            })
+            .fail(function() {
+                console.log("error");
+            });
 
-        console.log(locName + " " + clickPos.lat + " " +clickPos.lng );
+        console.log(locName + " " + clickPos.lat + " " + clickPos.lng);
     },
     timeoutId: 0,
     setStatus: function(status) {
