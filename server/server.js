@@ -83,7 +83,7 @@ app.post('/api/checkLocation', function(req, res) {
 
             if( Math.sqrt( Math.pow( savedLat - currentLat, 2) + Math.pow(savedLong - currentLong, 2) ) 
               <= 0.001){
-                result= "true";
+                result= true;
             } 
         }
 

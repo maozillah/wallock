@@ -11,7 +11,8 @@ var pos = {
     lng: 0
 };
 var clickPos, savedLocations, marker;
-var serverURL = "https://0c7415d8.ngrok.io/";
+// HAS TO BE HTTPS
+var serverURL = "https://c6f3c206.ngrok.io/";
 var unlocked = true;
 
 /***************************************************
@@ -64,15 +65,20 @@ function showPosition(position) {
     })
     .done(function(danger) {
         console.log ("near danger location? " + danger);
+        console.log("first unlocked =" + unlocked);
 
-        // if wallet is unlocked, and near a danger location. Lock and set unlocked to false
-        if (danger && unlocked) {
+        // unlocked = true, danger = true
+        if (danger==true && unlocked==true) {
+            console.log("lock wallet");
+
             //lock
             bluetoothSerial.write("a");
             unlocked = false;
-        }; 
+        } 
 
-        if (!danger && !unlocked) {
+        if (danger==false && unlocked==false) {
+            console.log("unlock wallet");
+
             //unlock
             bluetoothSerial.write("b");
             unlocked = true;
