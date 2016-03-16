@@ -40,26 +40,17 @@ function loadDataFromServer() {
             console.error("/api/comments", status, err.toString());
         }.bind(this)
     });
-
-    // unlock initially
-    bluetoothSerial.write("b");
 }
 
 function showPosition(position) {
 
-    // bluetoothSerial.write("a");
-    // bluetoothSerial.write("b");
-
-     // lat: position.coords.latitude,
-        // lng: position.coords.longitude
-
     pos = {
        
-       //  lat: position.coords.latitude,
-       // lng: position.coords.longitude
+        lat: position.coords.latitude,
+       lng: position.coords.longitude
 
-       lat: 43.4675599,
-       lng: -79.6919376
+       // lat: 43.4675599,
+       // lng: -79.6919376
     };
 
     $.ajax({
@@ -71,17 +62,25 @@ function showPosition(position) {
             currentLong: pos.lng
         }
     })
-    .done(function(msg) {
-        console.log (msg);
+    .done(function(danger) {
+        console.log ("near danger location? " + danger);
 
-        if (msg && unlocked) {
+        // if wallet is unlocked, and near a danger location. Lock and set unlocked to false
+        if (danger && unlocked) {
+            //lock
             bluetoothSerial.write("a");
-        } else {
-            bluetoothSerial.write("b")
+            unlocked = false;
+        }; 
+
+        if (!danger && !unlocked) {
+            //unlock
+            bluetoothSerial.write("b");
+            unlocked = true;
         };
     });
 
     console.log(pos.lat + " " + pos.lng);
+    console.log("unlocked =" + unlocked);
 }
 
 function initMap(latitude, longitude) {
@@ -141,7 +140,7 @@ function initMap(latitude, longitude) {
         app.showLocation();
         $('#locName').val("");
 
-        marker.addListener('click', function(event) {
+        // marker.addListener('click', function(event) {
             /*************************************
             CODE THAT REMOVES LOCATION FROM SERVER
             marker.getPosition().lat() and marker.getPosition().lng()
@@ -150,8 +149,8 @@ function initMap(latitude, longitude) {
 
             // display marker name
 
-            marker.setMap(null);
-        });
+        //     marker.setMap(null);
+        // });
     });
 }
 
@@ -254,6 +253,9 @@ var app = {
             });
 
         console.log(locName + " " + clickPos.lat + " " + clickPos.lng);
+
+        loadDataFromServer();
+        LocNameForm.hidden = true;
     },
     timeoutId: 0,
     setStatus: function(status) {

@@ -61,6 +61,9 @@ app.post('/api/comments', function(req, res) {
 app.post('/api/checkLocation', function(req, res) {
     var currentLat = req.body.currentLat;
     var currentLong = req.body.currentLong;
+    var savedLat, savedLong;
+
+
     var result = "false";
 
     fs.readFile(COMMENTS_FILE, function(err, data) {
@@ -72,7 +75,14 @@ app.post('/api/checkLocation', function(req, res) {
 
         for (i = 0; i < locations.length; i++) {
 
-            if( Math.sqrt( Math.pow(locations[i].lat - currentLat, 2) + Math.pow(locations[i].long - currentLong, 2) ) <= 0.001){
+          savedLat = locations[i].lat;
+          savedLong = locations[i].long;
+
+          // savedLat = 43.4675599;
+          // savedLong = -79.6919376;
+
+            if( Math.sqrt( Math.pow( savedLat - currentLat, 2) + Math.pow(savedLong - currentLong, 2) ) 
+              <= 0.001){
                 result= "true";
             } 
         }
