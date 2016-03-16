@@ -15,12 +15,7 @@
         }
         </style>
         <script>
-        // Redirect console.log to Evothings Workbench.
-        if (window.hyper && window.hyper.log) { console.log = hyper.log }
-        window.onerror = function(msg, url, line)
-        {
-        console.log(msg + ": " + url + ":" + line);
-        };
+        console.log = hyper.log
         </script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name = "format-detection" content = "telephone=no"/>
@@ -29,7 +24,8 @@
         -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
         <title>Light Control</title>
-        <script src="js/jquery-1.9.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<!--         <script src="js/jquery-1.9.1.min.js"></script> -->
         <script src="js/jquery.mobile-1.4.5.min.js"></script>
     </head>
     <body ontouchstart=""><!-- ontouchstart="" enables low-delay CSS transitions. -->
@@ -51,19 +47,20 @@
             <p id="demo"></p>
             <div id="map"></div>
 
-            <form action="/api/comments" id="saveLocation">
-                <input
-                    type="text"
-                    id="locName"
-                    placeholder="location name"
-                />
-                <input type="submit" value="save location">
-            </form>
-            
-            
+        <div id="LocNameForm">
+            <input
+                type="text"
+                id="locName"
+                placeholder="location name"
+            />
+            <button class="green" onclick="app.saveLocation()">Save</button>
+        </div>
+
+        <div id="images"></div>
+
             <button class="green wide" onclick="app.ledOn()">Light ON</button>
             <button class="red wide" onclick="app.ledOff()">Light OFF</button>
-            <button class="yellow wide" id="disconnectButton" onclick="app.disconnect()">Disconnect</button>
+            <!-- <button class="yellow wide" id="disconnectButton" onclick="app.disconnect()">Disconnect</button> -->
             
         </div>
         <div id="messageDiv" style="font-size:75%"></div>

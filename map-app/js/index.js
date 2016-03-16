@@ -10,6 +10,8 @@ var pos = {
     lat: 0,
     lng: 0
 };
+var clickPos;
+var serverURL = "https://0c7415d8.ngrok.io/";
 
 /***************************************************
 
@@ -20,6 +22,21 @@ Gotta load up saved locations from server beforehand
 
 if (navigator.geolocation) {
     navigator.geolocation.watchPosition(showPosition); //position changes
+}
+
+function loadDataFromServer() {
+    $.ajax({
+        url: serverURL+"api/comments",
+        dataType: 'json',
+        cache: false,
+        success: function(data) {
+            console.log(data[0].locName);
+            // push data to front-end
+        }.bind(this),
+        error: function(xhr, status, err) {
+            console.error("/api/comments", status, err.toString());
+        }.bind(this)
+    });
 }
 
 function showPosition(position) {
@@ -55,7 +72,7 @@ function initMap(latitude, longitude) {
     });
 
     map.addListener('click', function(event) {
-        var clickPos = {
+        clickPos = {
             lat: event.latLng.lat(),
             lng: event.latLng.lng()
         }
@@ -65,12 +82,9 @@ function initMap(latitude, longitude) {
             map: map
         });
 
-        // $( "#saveLocation" ).show();
-
-        /********************************
-        CODE THAT ADDS LOCATION TO SERVER
-        clickPos.lat and clickPos.lng
-        ********************************/
+        // show location name input field
+        app.showLocation();
+        $('#locName').val("");
 
         marker.addListener('click', function(event) {
             /*************************************
@@ -78,6 +92,9 @@ function initMap(latitude, longitude) {
             marker.getPosition().lat() and marker.getPosition().lng()
             Removing a location the marker coords instead because click may not be exact
             *************************************/
+
+            // display marker name
+
             marker.setMap(null);
         });
     });
@@ -135,30 +152,41 @@ var app = {
                 }, 1000);
             }
         }
+        loadDataFromServer();
         loadMap();
-        
-        saveLocation.hidden= true;
+
+        LocNameForm.hidden= true;
     },
     ondisconnect: function() {
         connectionScreen.hidden = false;
         colorScreen.hidden = true;
         app.setStatus("Disconnected.");
     },
-    onColorChange: function(evt) {
-        var c = app.getColor();
-        rgbText.innerText = c;
-        previewColor.style.backgroundColor = "rgb(" + c + ")";
-        app.sendToArduino(c);
+    showLocation: function(event) {
+        if (event) {
+            event.preventDefault();
+        }
+
+        LocNameForm.hidden= false;
     },
-    getColor: function() {
-        var color = [];
-        color.push(red.value);
-        color.push(green.value);
-        color.push(blue.value);
-        return color.join(',');
-    },
-    sendToArduino: function(c) {
-        bluetoothSerial.write("c" + c + "\n");
+    saveLocation: function() {
+        var locName = $('#locName').val();
+
+        $.ajax({
+              method: "POST",
+              url: serverURL+"api/comments",
+              dataType: 'json',
+              data: { locName: locName, lat: clickPos.lat, long: clickPos.lng}
+            })
+        .done(function( msg ) {
+            console.log( "Data Saved: " + msg );
+            alert("Location Saved!");
+        })
+        .fail(function() {
+            console.log( "error" );
+        });
+
+        console.log(locName + " " + clickPos.lat + " " +clickPos.lng );
     },
     timeoutId: 0,
     setStatus: function(status) {

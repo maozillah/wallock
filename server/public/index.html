@@ -41,23 +41,23 @@
         var currentLong = -79.701940;
 
         $( document ).ready(function() {
-            // loadDataFromServer();
+            loadDataFromServer();
         });
 
-        // function loadDataFromServer() {
-        //     $.ajax({
-        //       url: "/api/comments",
-        //       dataType: 'json',
-        //       cache:false,
-        //       success: function(data) {
-        //         console.log(data);
-        //         // push data to front-end
-        //       }.bind(this),
-        //       error: function(xhr, status, err) {
-        //         console.error("/api/comments", status, err.toString());
-        //       }.bind(this)
-        //       });
-        //   }
+        function loadDataFromServer() {
+            $.ajax({
+              url: "/api/comments",
+              dataType: 'json',
+              cache:false,
+              success: function(data) {
+                console.log(data);
+                // push data to front-end
+              }.bind(this),
+              error: function(xhr, status, err) {
+                console.error("/api/comments", status, err.toString());
+              }.bind(this)
+              });
+          }
 
         $("#saveLocation").submit(function(e) {
 
