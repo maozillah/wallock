@@ -12,7 +12,7 @@ var pos = {
 };
 var clickPos, savedLocations, marker;
 // HAS TO BE HTTPS
-var serverURL = "https://c6f3c206.ngrok.io/";
+var serverURL = "https://571cb3bb.ngrok.io/";
 var unlocked = true;
 
 /***************************************************
@@ -34,6 +34,7 @@ function loadDataFromServer() {
         success: function(data) {
             savedLocations = data;
 
+            console.log("loaded data from server");
             // initiate map once locations have been retrieved
             app.loadMap();
         }.bind(this),
@@ -219,10 +220,12 @@ var app = {
     loadMap: function() {
         if (!(pos.lat == 0 && pos.lng == 0)) {
             initMap(pos.lat, pos.lng);
+            console.log("Current location detected. Initializing map");
         } else {
             setTimeout(function() {
                 app.loadMap();
             }, 1000);
+            console.log("Timeout. is location services on?");
         }
     },
     ondisconnect: function() {
