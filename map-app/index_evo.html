@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, user-scalable=no
+        initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+        <title>Wallock</title>
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+
+        <style>
+        @import 'ui/css/evothings-app.css';
+        
+        #map {
+        height: 300px;
+        width: 100%;
+        }
+        </style>
+        <script>
+        console.log = hyper.log
+        </script>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name = "format-detection" content = "telephone=no"/>
+        <!--
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width;" />
+        -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <title>Wallock</title>
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="js/jquery.mobile-1.4.5.min.js"></script>
+    </head>
+    
+    <body ontouchstart=""><!-- ontouchstart="" enables low-delay CSS transitions. -->
+    <header>
+        <span>Wallock</span>
+    </header>
+    
+    <div data-role="main" class="ui-content">
+        <div id="connectionScreen">
+            <ul id="deviceList" class="topcoat-list">
+            </ul>
+            <div style="margin: 10px">
+                <button class="topcoat-button" id="refreshButton">Find bluetooth devices</button>
+            </div>
+        </div>
+        
+        <div id="colorScreen">
+            
+            <p id="demo"></p>
+            <div id="map"></div>
+
+        <div id="LocNameForm">
+            <input
+                type="text"
+                id="locName"
+                placeholder="location name"
+            />
+            <button class="green" onclick="app.saveLocation()">Save</button>
+        </div>
+
+        <div id="images"></div>
+
+            <button class="green wide" onclick="app.ledOn()">Lock</button>
+            <button class="red wide" onclick="app.ledOff()">Unlock</button>
+            <!-- <button class="yellow wide" id="disconnectButton" onclick="app.disconnect()">Disconnect</button> -->
+            
+        </div>
+        <div id="messageDiv" style="font-size:75%"></div>
+
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/underscore-min.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsbDZ3lAcNuR5wKp3xSaDa_UIbvyqdyKo" async defer></script>
+        <script type="text/javascript">
+            app.initialize();
+            app.ledOn = function(){
+                bluetoothSerial.write("a");
+            }
+            app.ledOff = function(){
+                bluetoothSerial.write("b");
+            }
+        </script>
+    </div>
+    
+</body>
+</html>
