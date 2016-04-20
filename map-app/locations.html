@@ -49,12 +49,9 @@
     </div>
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="vendor/jquerymobile/jquery-ui.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
-    <!-- evo -->
-   <!--  <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="js/underscore-min.js"></script> -->
+    
     <script type="text/javascript" src="js/index.js"></script>
+    
     <script type="text/javascript">
     // loadDataFromServer();
 
@@ -66,10 +63,10 @@ $.ajax({
         cache: false,
         success: function(data) {
             console.log("server done");
-            console.log(data);
+            // console.log(data);
 
             $.each( data, function( key, value ) {
-                console.log(value);
+                // console.log(value);
 
                 $( "#dangerLocs" ).append( "<li><a href=\"#\"><img src=\"img/1.jpg\" class=\"ui-thumbnail ui-thumbnail-circular\" /><h2 class=\"no-bot-margin\">"
                     +value.locName+
@@ -85,13 +82,18 @@ $.ajax({
    
     </script>
 
+
+    <script src="vendor/jquerymobile/jquery-ui.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/underscore-min.js"></script>
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsbDZ3lAcNuR5wKp3xSaDa_UIbvyqdyKo" async defer></script>
     <!-- jquery mobile -->
     <script src="vendor/waves/waves.min.js"></script>
     <script src="vendor/wow/wow.min.js"></script>
     <script src="js/nativedroid2.js"></script>
     <script src="nd2settings.js"></script>
-
 </body>
 
 </html>
