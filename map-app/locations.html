@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Wallock - </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="vendor/jquerymobile/jquery.mobile.min.css" />
+    <link rel="stylesheet" href="vendor/waves/waves.min.css" />
+    <link rel="stylesheet" href="vendor/wow/animate.css" />
+    <link rel="stylesheet" href="css/nativedroid2.css" />
+    <link rel="stylesheet" href="css/nativedroid2.color.light-green.css" />
+    <link rel="stylesheet" href="css/custom.css" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+    <style>
+    /*@import 'ui/css/evothings-app.css';*/
+    
+    #map {
+        height: 300px;
+        width: 100%;
+    }
+    </style>
+    <script>
+    console.log = hyper.log;
+    </script>
+</head>
+
+<body ontouchstart="">
+    <div data-role="page">
+        <nd2-include data-src="examples/fragments/panel.left.mod.html"></nd2-include>
+        <div data-role="panel" id="bottomsheet" data-animate="false" data-position='bottom' data-display="overlay">
+            <nd2-include data-src="/examples/fragments/bottom.sheet.html"></nd2-include>
+        </div>
+        <div data-role="header" data-position="fixed" class="wow fadeInDown" data-wow-delay="0.2s">
+            <a href="#leftpanel" class="ui-btn ui-btn-left wow fadeIn" data-wow-delay='0.8s'><i class="zmdi zmdi-menu"></i></a>
+            <h1 class="wow fadeIn" data-wow-delay='0.4s'>Locations</h1>
+        </div>
+        <div role="main" class="ui-content" data-inset="false">
+
+            <ul id="dangerLocs" data-role="listview" data-icon="false">
+               
+            </ul>
+        </div>
+    </div>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="vendor/jquerymobile/jquery-ui.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+    <!-- evo -->
+   <!--  <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/underscore-min.js"></script> -->
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+    // loadDataFromServer();
+
+// TODO wait until savedLocation is set, response comes back from server before displaying locations. use function
+
+$.ajax({
+        url: serverURL + "api/comments",
+        dataType: 'json',
+        cache: false,
+        success: function(data) {
+            console.log("server done");
+            console.log(data);
+
+            $.each( data, function( key, value ) {
+                console.log(value);
+
+                $( "#dangerLocs" ).append( "<li><a href=\"#\"><img src=\"img/1.jpg\" class=\"ui-thumbnail ui-thumbnail-circular\" /><h2 class=\"no-bot-margin\">"
+                    +value.locName+
+                    "</h2><p><i class=\'zmdi zmdi-pin\'></i> 123 Trafalgar Road, Oakville, Ontario</p></a></li>" );
+
+            });
+
+        }.bind(this),
+        error: function(xhr, status, err) {
+            console.error("/api/comments", status, err.toString());
+        }.bind(this)
+    });
+   
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsbDZ3lAcNuR5wKp3xSaDa_UIbvyqdyKo" async defer></script>
+    <!-- jquery mobile -->
+    <script src="vendor/waves/waves.min.js"></script>
+    <script src="vendor/wow/wow.min.js"></script>
+    <script src="js/nativedroid2.js"></script>
+    <script src="nd2settings.js"></script>
+
+</body>
+
+</html>

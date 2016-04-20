@@ -65,9 +65,10 @@ function showPosition(position) {
         }
     })
     .done(function(danger) {
-        console.log ("near danger location? " + danger);
-        console.log("first unlocked =" + unlocked);
+        // console.log ("near danger location? " + danger);
+        // console.log("first unlocked =" + unlocked);
 
+        // near danger location
         // unlocked = true, danger = true
         if (danger==true && unlocked==true) {
             console.log("lock wallet");
@@ -75,6 +76,10 @@ function showPosition(position) {
             //lock
             bluetoothSerial.write("a");
             unlocked = false;
+
+            // console.log(unlocked);
+
+            window.location.href = "#locked";
         } 
 
         if (danger==false && unlocked==false) {
@@ -83,6 +88,7 @@ function showPosition(position) {
             //unlock
             bluetoothSerial.write("b");
             unlocked = true;
+            window.location.href = "index.html";
         };
     });
 
@@ -247,6 +253,8 @@ var app = {
             .done(function(msg) {
                 console.log("Data Saved: " + msg);
                 alert("Location Saved!");
+
+                $('#locName').val('');
             })
             .fail(function() {
                 console.log("error");

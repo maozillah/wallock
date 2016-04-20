@@ -50,7 +50,10 @@
                     <button class="topcoat-button" id="refreshButton">Find bluetooth devices</button>
                 </div>
             </div>
+            
             <div id="colorScreen">
+            <button class="green wide" onclick="app.ledOn()">Lock</button>
+            <button class="red wide" onclick="app.ledOff()">Unlock</button>
                 <p class="subtitle">Hi Kaye, your wallet is</p>
                 <h1 class="status clr-bg-light-green"><i class='zmdi zmdi-lock-open zmdi-hc-4x'></i> UNLOCKED</h1>
                 <hr />
@@ -92,7 +95,7 @@
                         </a>
                     </li>
                 </ul>
-                <a href="#locked" class="ui-btn">locked page</a>
+                <!-- <a href="#locked" class="ui-btn">locked page</a> -->
             </div>
             <a href="#addLoc" data-transition="pop" class="ui-btn
                 ui-btn-inline
@@ -105,66 +108,61 @@
         </div>
     </div>
     <!-- Locked page -->
-    <div data-role="page" id="locked">
-        <div data-role="header" data-position="fixed" class="wow fadeInDown" data-wow-delay="0.2s">
-            <h1 class="wow fadeIn" data-wow-delay='0.4s'>Wallock</h1>
-        </div>
-        <div role="main" class="ui-content" data-inset="false">
-            <p class="subtitle">Hi Kaye, your wallet is</p>
-            <h1 class="status clr-bg-red"><i class='zmdi zmdi-lock zmdi-hc-4x'></i> LOCKED</h1>
-            <h4 class="subtitle">
+        <div data-role="page" id="locked">
+            <div data-role="header" data-position="fixed" class="wow fadeInDown" data-wow-delay="0.2s">
+                <h1 class="wow fadeIn" data-wow-delay='0.4s'>Wallock</h1>
+            </div>
+            <div role="main" class="ui-content" data-inset="false">
+                <p class="subtitle">Hi Kaye, your wallet is</p>
+                <h1 class="status clr-bg-red"><i class='zmdi zmdi-lock zmdi-hc-4x'></i> LOCKED</h1>
+                <h4 class="subtitle">
                 Since you're near a location where you usually spend...
                 </h4>
-            <ul data-role="listview" data-icon="false">
-                <li>
-                    <a href="#">
-                        <img src="img/1.jpg" class="ui-thumbnail ui-thumbnail-circular" />
-                        <h2 class="no-bot-margin">Union Burrito</h2>
-                        <p class="descr"><i class='zmdi zmdi-pin'></i> 123 Trafalgar Road, Oakville, Ontario
-                        </p>
-                        <div class="saved" style="color: #F44336;">
-                            $5
-                        </div>
-                    </a>
-                </li>
-            </ul>
-            <h4 class="subtitle">
+                <ul data-role="listview" data-icon="false">
+                    <li>
+                        <a href="#">
+                            <img src="img/1.jpg" class="ui-thumbnail ui-thumbnail-circular" />
+                            <h2 class="no-bot-margin">Union Burrito</h2>
+                            <p class="descr"><i class='zmdi zmdi-pin'></i> 123 Trafalgar Road, Oakville, Ontario
+                            </p>
+                            <div class="saved" style="color: #F44336;">
+                                $5
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <h4 class="subtitle">
                 Don't forget! You said your goal was to...
                 </h4>
-            <ul data-role="listview" data-icon="false">
-                <li>
-                    <a href="#">
-                        <img src="img/4.jpg" class="ui-thumbnail ui-thumbnail-circular" />
-                        <h2 class="no-bot-margin">Save money</h2>
-                        <p>Go on Spring Break trip with friends
-                        </p>
-                    </a>
-                </li>
-            </ul>
-            <hr>
-            <h4><i class='zmdi zmdi-lock-open loc-icon'></i>UNLOCKING METHOD</h4>
-            <p>If you really really need to use your wallet...</p>
-            <a href="#" class="ui-btn ui-btn-raised">Call a buddy</a>
+                <ul data-role="listview" data-icon="false">
+                    <li>
+                        <a href="#">
+                            <img src="img/4.jpg" class="ui-thumbnail ui-thumbnail-circular" />
+                            <h2 class="no-bot-margin">Save money</h2>
+                            <p>Go on Spring Break trip with friends
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+                <hr>
+                <h4><i class='zmdi zmdi-lock-open loc-icon'></i>UNLOCKING METHOD</h4>
+                <p>If you really really need to use your wallet...</p>
+                <a href="#" class="ui-btn ui-btn-raised">Call a buddy</a>
+            </div>
         </div>
-    </div>
     <!-- add locations page -->
     <div data-role="page" id="addLoc">
         <div data-role="header" data-position="fixed" class="wow fadeIn">
-            <a href="#" class="ui-btn ui-btn-primary ui-btn-right wow fadeIn" data-wow-delay='1.2s' style="width: auto;">Save</a>
-            <a href="#" class="ui-btn ui-btn-left wow fadeIn" data-rel="back" data-direction="reverse" data-wow-delay='0.8s'><i class="zmdi zmdi-close"></i></a>
+            <a href="#" class="ui-btn ui-btn-primary ui-btn-right wow fadeIn" data-wow-delay='1.2s' style="width: auto;" onclick="app.saveLocation()">Save</a>
+            <a href="index.html" class="ui-btn ui-btn-left wow fadeIn" data-rel="back" data-direction="reverse" data-wow-delay='0.8s'><i class="zmdi zmdi-close"></i></a>
             <h1 class="wow fadeIn" data-wow-delay='0.4s'>Add Danger Location</h1>
         </div>
         <div role="main" class="ui-content">
             <div id="map"></div>
-            <div id="LocNameForm">
-                <input type="text" id="locName" placeholder="location name" />
-                <button class="green" onclick="app.saveLocation()">Save</button>
-            </div>
-            <button class="green wide" onclick="app.ledOn()">Lock</button>
-            <button class="red wide" onclick="app.ledOff()">Unlock</button>
-
+            <!--                 <button class="green" onclick="app.saveLocation()">Save</button> -->
+            
             <hr />
-            <input type="text" name="locNam" id="locNam" value="" data-clear-btn="true" placeholder="Location name">
+            <input type="text" name="locNam" id="locName" value="" data-clear-btn="true" placeholder="Location name">
             <a href="#goal" data-rel="popup" data-position-to="window" data-role="button" data-inline="true" data-transition="pop" class="ui-btn ui-btn-raised waves-effect waves-button waves-effect waves-button">Select a goal <i class='lIcon fa fa-chevron-right'></i></a>
             <hr />
             <div data-role="collapsible" data-inset="false" data-iconpos="right" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
@@ -223,8 +221,8 @@
     <script src="vendor/jquerymobile/jquery-ui.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
     <!-- evo -->
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="js/underscore-min.js"></script>
+   <!--  <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/underscore-min.js"></script> -->
     <script type="text/javascript" src="js/index.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsbDZ3lAcNuR5wKp3xSaDa_UIbvyqdyKo" async defer></script>
     <!-- jquery mobile -->
