@@ -12,7 +12,7 @@ var pos = {
 };
 var clickPos, savedLocations, marker;
 // HAS TO BE HTTPS
-var serverURL = "https://571cb3bb.ngrok.io/";
+var serverURL = "https://a49dd1e4.ngrok.io/";
 var unlocked = true;
 
 /***************************************************
@@ -204,18 +204,9 @@ var app = {
         colorScreen.hidden = false;
         app.setStatus("Connected.");
 
-        // function loadMap() {
-        //     if (!(pos.lat == 0 && pos.lng == 0)) {
-        //         initMap(pos.lat, pos.lng);
-        //     } else {
-        //         setTimeout(function() {
-        //             loadMap();
-        //         }, 1000);
-        //     }
-        // }
-        loadDataFromServer();
+        // loadDataFromServer();
 
-        LocNameForm.hidden = true;
+        // LocNameForm.hidden = true;
     },
     loadMap: function() {
         if (!(pos.lat == 0 && pos.lng == 0)) {
@@ -238,7 +229,7 @@ var app = {
             event.preventDefault();
         }
 
-        LocNameForm.hidden = false;
+        // LocNameForm.hidden = false;
     },
     saveLocation: function() {
         var locName = $('#locName').val();
@@ -264,7 +255,7 @@ var app = {
         console.log(locName + " " + clickPos.lat + " " + clickPos.lng);
 
         loadDataFromServer();
-        LocNameForm.hidden = true;
+        // LocNameForm.hidden = true;
     },
     timeoutId: 0,
     setStatus: function(status) {
