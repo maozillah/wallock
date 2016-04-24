@@ -12,8 +12,9 @@ var pos = {
 };
 var clickPos, savedLocations, marker;
 // HAS TO BE HTTPS
-var serverURL = "https://a49dd1e4.ngrok.io/";
+var serverURL = "https://e2e5ab59.ngrok.io/";
 var unlocked = true;
+// var unlocked = false;
 
 /***************************************************
 
@@ -65,7 +66,7 @@ function showPosition(position) {
         }
     })
     .done(function(danger) {
-        // console.log ("near danger location? " + danger);
+        console.log ("near danger location? " + danger);
         // console.log("first unlocked =" + unlocked);
 
         // near danger location
@@ -82,13 +83,13 @@ function showPosition(position) {
             window.location.href = "#locked";
         } 
 
-        if (danger==false && unlocked==false) {
+        if (unlocked==false && danger==false) {
             console.log("unlock wallet");
 
             //unlock
             bluetoothSerial.write("b");
             unlocked = true;
-            window.location.href = "index.html";
+            window.location.href = "#unlocked";
         };
     });
 

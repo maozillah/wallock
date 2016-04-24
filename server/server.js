@@ -64,7 +64,7 @@ app.post('/api/checkLocation', function(req, res) {
     var savedLat, savedLong;
 
 
-    var result = "false";
+    var result = false;
 
     fs.readFile(COMMENTS_FILE, function(err, data) {
         if (err) {

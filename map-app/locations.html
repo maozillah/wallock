@@ -49,7 +49,7 @@
     </div>
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    
+
     <script type="text/javascript" src="js/index.js"></script>
     
     <script type="text/javascript">
@@ -74,6 +74,15 @@ $.ajax({
 
             });
 
+             $.getScript("vendor/jquerymobile/jquery-ui.min.js");
+             $.getScript("//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js");
+             // $.getScript("cordova.js");
+             $.getScript("js/underscore-min.js");
+             $.getScript("vendor/waves/waves.min.js");
+             $.getScript("vendor/wow/wow.min.js");
+             $.getScript("js/nativedroid2.js");
+             $.getScript("nd2settings.js");
+
         }.bind(this),
         error: function(xhr, status, err) {
             console.error("/api/comments", status, err.toString());
@@ -83,17 +92,18 @@ $.ajax({
     </script>
 
 
-    <script src="vendor/jquerymobile/jquery-ui.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="js/underscore-min.js"></script>
+<!--     <script src="vendor/jquerymobile/jquery-ui.min.js"></script> -->
+<!--     <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script> -->
+    
+<!--     <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/underscore-min.js"></script> -->
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsbDZ3lAcNuR5wKp3xSaDa_UIbvyqdyKo" async defer></script>
     <!-- jquery mobile -->
-    <script src="vendor/waves/waves.min.js"></script>
+<!--     <script src="vendor/waves/waves.min.js"></script>
     <script src="vendor/wow/wow.min.js"></script>
     <script src="js/nativedroid2.js"></script>
-    <script src="nd2settings.js"></script>
+    <script src="nd2settings.js"></script> -->
 </body>
 
 </html>

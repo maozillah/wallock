@@ -31,7 +31,7 @@
 </head>
 
 <body ontouchstart="">
-    <div data-role="page">
+    <div data-role="page" id="unlocked">
         <nd2-include data-src="examples/fragments/panel.left.mod.html"></nd2-include>
         <div data-role="panel" id="bottomsheet" data-animate="false" data-position='bottom' data-display="overlay">
             <nd2-include data-src="/examples/fragments/bottom.sheet.html"></nd2-include>
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div id="colorScreen">
-                <!--  <button class="green wide" onclick="app.ledOn()">Lock</button>
+<!--                  <button class="green wide" onclick="app.ledOn()">Lock</button>
                     <button class="red wide" onclick="app.ledOff()">Unlock</button> -->
                 <p class="subtitle">Hi Kaye, your wallet is</p>
                 <h1 class="status clr-bg-light-green"><i class='zmdi zmdi-lock-open zmdi-hc-4x'></i> UNLOCKED</h1>
